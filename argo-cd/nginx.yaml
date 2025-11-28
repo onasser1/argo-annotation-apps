@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://gitlab.com/onasser/argocd-apps.git'
+    repoURL: 'https://gitlab.com/onasser/argocd-annotation-apps.git'
     path: overlays
     targetRevision: main
   destination:
