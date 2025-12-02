@@ -8,7 +8,7 @@ spec:
     - list:
         elements: 
           - name: a
-            values: |-
+            value: |-
               image: busybox
               replica: 1
               labels: a
@@ -25,14 +25,20 @@ spec:
     metadata:
       name: "{{.name}}"
     spec:
-      project: "workshop"
+      project: default
       syncPolicy: 
         automated:
           prune: true    
-      sources:
-        - repoURL: https://github.com/onasser1/argo-annotations-apps.git
-          path: overlays
-          targetRevision: HEAD
+      source:
+        repoURL: https://github.com/onasser1/argo-annotations-apps.git
+        path: overlays
+        targetRevision: HEAD
+        kustomize:
+          commonAnnotations:
+            app-name: "{{ .name }}"
+          commonLabels:
+            app: "{{ .name }}"
+
       destination: 
         server: https://kubernetes.default.svc
         namespace: argocd
