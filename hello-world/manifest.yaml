@@ -38,7 +38,6 @@ spec:
             app-name: "{{ .name }}"
           commonLabels:
             app: "{{ .name }}"
-
       destination: 
         server: https://kubernetes.default.svc
         namespace: argocd
