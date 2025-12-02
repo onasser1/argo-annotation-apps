@@ -33,7 +33,6 @@ spec:
         - repoURL: https://github.com/onasser1/argo-annotations-apps.git
           path: overlays
           targetRevision: HEAD
-          helm:
-            values: "{{- .values | toYaml | indent 18 }}"
       destination: 
         server: https://kubernetes.default.svc
+        namespace: argocd
