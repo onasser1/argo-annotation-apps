@@ -1,17 +1,39 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
   name: hello-world
   namespace: argocd
 spec:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    path: hello-world
-    repoURL: https://github.com/onasser1/argocd-apps.git
-    targetRevision: HEAD
-  syncPolicy:
-    automated:
-      prune: true
+  generators:
+    - list:
+        elements: 
+          - name: a
+            values: |-
+              image: busybox
+              replica: 1
+              labels: a
+              tty: "true"
+          - name: b
+            values: |-
+              image: busybox
+              replica: 1
+              labels: b
+              tty: "true"
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  template:
+    metadata:
+      name: "{{.name}}"
+    spec:
+      project: "workshop"
+      syncPolicy: 
+        automated:
+          prune: true    
+      sources:
+        - repoURL: https://github.com/onasser1/argo-annotations-apps.git
+          path: overlays
+          targetRevision: HEAD
+          helm:
+            values: "{{- .values | toYaml | indent 18 }}"
+      destination: 
+        server: https://kubernetes.default.svc
